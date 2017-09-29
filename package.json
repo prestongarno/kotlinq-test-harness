@@ -12,7 +12,8 @@
   "dependencies": [
     "express",
     "express-graphql",
-    "graphql"
+    "graphql",
+    "graphql-tools"
   ],
   "version": "0.1.0",
   "main": "src/server.json",
