@@ -5,7 +5,7 @@ const graphqlTools = require('graphql-tools');
 const schemaText = `
 
   type Query {
-    me: User
+    me: Actor
   }
   
   union Actor = User | Bot
@@ -43,12 +43,18 @@ const resolvers = {
 };
 
 const app = express();
+
+app.get('/status', function(req, res) {
+  res.code = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.send('{ "status": "okay" }');
+});
+
 app.use('/graphql', graphqlHTTP({
   schema: graphqlTools.makeExecutableSchema({
     typeDefs: schemaText,
-    resolvers: resolvers
-  }),
-  graphiql: true,
+    resolvers: resolvers }),
+  graphiql: false,
 }));
 
 app.listen(4000);
