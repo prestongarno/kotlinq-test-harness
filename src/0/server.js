@@ -16,7 +16,7 @@ const schema = buildSchema(`
 
 const root = {
   hello: () => {
-    return 'Hello world!';
+    return 'world';
   }, me: () => {
     return {
       name: () => "Preston Garno"
@@ -25,6 +25,13 @@ const root = {
 };
 
 const app = express();
+
+app.get('/status', function(req, res) {
+  res.code = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.send('{ "status": "okay" }');
+});
+
 app.use('/graphql', graphqlHTTP({
   schema: schema, rootValue: root, graphiql: true,
 }));

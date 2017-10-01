@@ -8,6 +8,6 @@ if [ -z "$1" ]
     exit 1
 fi
 
-echo 'Running a GraphQL API server at localhost:4000/graphql'
+#echo 'Running a GraphQL API server at localhost:4000/graphql'
 
 node src/$1/server.js
