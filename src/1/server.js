@@ -6,6 +6,7 @@ const schemaText = `
 
   type Query {
     me: Actor
+    bot: Actor
   }
   
   union Actor = User | Bot
@@ -20,31 +21,40 @@ const schemaText = `
   }
 `;
 
-const meIrl = {
-    name: () => "Preston Garno"
-};
-
 const resolvers = {
+
+  Query: {
+    me: () => {
+      return {
+        name: () => "Preston Garno"
+      }
+    },
+    bot: () => {
+      return {
+        name: () => "Mr. Robot",
+        owner: () => { return { name: () => "Preston Garno" } }
+      }
+    }
+  },
+
   Actor: {
-    __resolveType(obj, context, info){
-      if(obj.owner){
-        return 'Bot';
+    __resolveType(obj, context, info) {
+      console.log(obj);
+      if (obj.owner) {
+        return "Bot"
       } else if (obj.name) {
-        return 'Car';
+        return "User"
       } else {
         return null
       }
     },
   },
 
-  Query: {
-    me: () => meIrl
-  }
 };
 
 const app = express();
 
-app.get('/status', function(req, res) {
+app.get('/status', function (req, res) {
   res.code = 200;
   res.setHeader('Content-Type', 'application/json');
   res.send('{ "status": "okay" }');
@@ -52,9 +62,8 @@ app.get('/status', function(req, res) {
 
 app.use('/graphql', graphqlHTTP({
   schema: graphqlTools.makeExecutableSchema({
-    typeDefs: schemaText,
-    resolvers: resolvers }),
-  graphiql: false,
+    typeDefs: schemaText, resolvers: resolvers
+  }), graphiql: false,
 }));
 
 app.listen(4000);
