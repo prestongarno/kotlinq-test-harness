@@ -6,7 +6,6 @@ const schemaText = `
 
   type Query {
     me: Actor
-    bot: Actor
   }
   
   union Actor = User | Bot
@@ -17,7 +16,7 @@ const schemaText = `
   
   type Bot {
     name: String
-    owner: User
+    owner: Actor
   }
 `;
 
@@ -26,15 +25,10 @@ const resolvers = {
   Query: {
     me: () => {
       return {
-        name: () => "Preston Garno"
+        name: () => "Mr. Robot",
+        owner: () => { return { name: () => "prestongarno"}}
       }
     },
-    bot: () => {
-      return {
-        name: () => "Mr. Robot",
-        owner: () => { return { name: () => "Preston Garno" } }
-      }
-    }
   },
 
   Actor: {
@@ -49,7 +43,6 @@ const resolvers = {
       }
     },
   },
-
 };
 
 const app = express();
